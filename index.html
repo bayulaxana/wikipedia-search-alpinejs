@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wikipedia Search</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://unpkg.com/@tabler/core@1.0.0-beta3/dist/js/tabler.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta3/dist/css/tabler.min.css">
+  <script defer src="https://unpkg.com/alpinejs@3.0.5/dist/cdn.min.js"></script>
+
+</head>
+<body>
+  <header class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://en.wikipedia.org/wiki/Main_Page">
+        <img src="./img/wikipedia-logo.png" alt="" height="24" class="d-inline-block align-text-top">
+        &nbsp; Wikipedia
+      </a>
+    </div>
+  </header>
+
+  <div x-data="WikipediaSearch" class="container d-flex flex-column">
+    <div class="text-center pt-5">
+      <img src="./img/wikipedia-logo.png" alt="wikipedia" class="mb-3">
+      <h1 class="mb-4">Search Wikipedia</h1>
+
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <div class="input-icon">
+            <span class="input-icon-addon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <circle cx="10" cy="10" r="7"></circle>
+                <line x1="21" y1="21" x2="15" y2="15"></line>
+             </svg>
+            </span>
+            <input type="text" placeholder="Ex: Colors" class="form-control form-control-lg"
+              x-model.debounce.200ms="searchValue"
+              x-init="$watch('searchValue', value => fetchSearch(value))"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="search-result">
+      <h3 x-show="noResults">No results match</h3>
+      <ul>
+        <template x-for="item in searchResults" :key="item.pageid">
+          <li x-transition>
+            <a target="_blank" x-bind:href="`https://en.wikipedia.org/?curid=${ item.pageid }`"x-text="item.title"></a> |
+            <span x-effect="$el.innerHTML = item.snippet"></span>
+          </li>
+        </template>
+      </ul>
+    </main>
+  </div>
+  <script src="./js/app.js"></script>
+</body>
+</html>
