@@ -2,16 +2,42 @@ function WikipediaSearch() {
   return {
     searchValue: '',
     searchResults: [],
-    noResults: false,
-    test: false,
+    noResults: true,
+    isSearching: false,
     init() {
-      this.test = (this.searchValue == '');
+      this.$watch('searchValue', (val) => {
+        this.isSearching = (val != '');
+      });
     },
-    // search function
+    // function
+    slide() {
+      const wrapper = document.getElementById('banner-wrapper');
+      
+      if (wrapper.classList.contains('slide-transition-hidden')) {
+        wrapper.classList.remove('slide-transition-hidden');
+        wrapper.style.maxHeight = 'none';
+
+        let height = wrapper.offsetHeight;
+        wrapper.style.maxHeight = '0';
+
+        setTimeout(function() {
+          wrapper.style.maxHeight = `${ height }px`;
+        }, 1);
+      }
+      else {
+        let height = wrapper.offsetHeight;
+
+        wrapper.style.maxHeight = `${ height }px`;
+        wrapper.classList.add('slide-transition-hidden');
+
+        setTimeout(function() {
+          wrapper.style.maxHeight = '0';
+        }, 1);
+      }
+    },
     async fetchSearch(searchValue) {
       if (!searchValue) {
         this.searchResults = [];
-        this.noResults = false;
         return;
       }
       
@@ -37,8 +63,6 @@ function WikipediaSearch() {
       catch (err) {
         console.error(err);
       }
-
-      this.noResults = (this.searchValue && this.searchResults.length == 0);
     },
   };
 }
