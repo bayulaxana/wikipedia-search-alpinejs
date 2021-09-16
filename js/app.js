@@ -1,3 +1,4 @@
+// AlpineJS Component
 function WikipediaSearch() {
   return {
     searchValue: '',
