@@ -1,3 +1,5 @@
+/* This is a comment on style.css */
+
 .slide-transition {
     transition: max-height 0.3s cubic-bezier(.23,.74,.43,.94);
     overflow-y: hidden;
